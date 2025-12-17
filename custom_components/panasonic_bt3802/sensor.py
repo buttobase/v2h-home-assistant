@@ -3,15 +3,15 @@ from __future__ import annotations
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.const import UnitOfPower
 from homeassistant.helpers.entity import DeviceInfo
+from homeassistant.components.sensor import SensorDeviceClass
 
 from .const import DOMAIN
 
 
-async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
+async def async_setup_entry(hass, entry, async_add_entities):
     """Set up Panasonic BT3802 sensors (YAML platform)."""
 
-    coordinator = hass.data[DOMAIN]["coordinator"]
-
+    coordinator = hass.data[DOMAIN][entry.entry_id]["coordinator"]
     async_add_entities(
         [
             PanasonicGridPowerBoughtSensor(coordinator),
@@ -23,7 +23,7 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
 class _BasePanasonicSensor(SensorEntity):
     _attr_has_entity_name = True
     _attr_native_unit_of_measurement = UnitOfPower.KILO_WATT
-    _attr_device_class = "power"
+    _attr_device_class = SensorDeviceClass.POWER
     _attr_state_class = "measurement"
     _attr_should_poll = False
 
@@ -56,7 +56,8 @@ class PanasonicGridPowerBoughtSensor(_BasePanasonicSensor):
     @property
     def native_value(self):
         data = self.coordinator.data or {}
-        return data.get("grid_power_bought_kw")
+        value = data.get("grid_power_bought_kw")
+        return max(0, value) if value is not None else None
 
 
 class PanasonicGridPowerSoldSensor(_BasePanasonicSensor):
@@ -66,4 +67,5 @@ class PanasonicGridPowerSoldSensor(_BasePanasonicSensor):
     @property
     def native_value(self):
         data = self.coordinator.data or {}
-        return data.get("grid_power_sold_kw")
+        value = data.get("grid_power_sold_kw")
+        return max(0, value) if value is not None else None
