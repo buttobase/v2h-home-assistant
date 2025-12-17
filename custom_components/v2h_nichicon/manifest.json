@@ -1,0 +1,11 @@
+{
+  "domain": "v2h_nichicon",
+  "name": "Nichicon V2H Controller",
+  "version": "0.1.0",
+  "documentation": "https://example.com",
+  "requirements": [],
+  "codeowners": ["@felix"],
+  "iot_class": "local_polling",
+  "integration_type": "hub",
+  "config_flow": true
+}

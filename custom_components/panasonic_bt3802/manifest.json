@@ -1,0 +1,11 @@
+{
+  "domain": "panasonic_bt3802",
+  "name": "Panasonic BT3802 Power Monitor",
+  "version": "0.1.0",
+  "documentation": "https://example.com",
+  "requirements": [],
+  "codeowners": ["@felix"],
+  "iot_class": "local_polling",
+  "integration_type": "hub",
+  "config_flow": false
+}
